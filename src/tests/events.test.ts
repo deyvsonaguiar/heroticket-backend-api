@@ -32,9 +32,9 @@ describe('Teste de evento', () => {
       .field('location[longitude]', event.location.longitude)
       .field('price[sector]', event.price[0].sector)
       .field('price[amount]', event.price[0].amount)
-      .attach('banner', '../images/banner.png')
-      .attach('flyers', '../images/flyer1.png')
-      .attach('flyers', '../images/flyer2.png')
+      .attach('banner', '/home/deyvsonaguiar/programacao/hero-tickets/backend/src/images/banner.png')
+      .attach('flyers', '/home/deyvsonaguiar/programacao/hero-tickets/backend/src/images/flyer1.png')
+      .attach('flyers', '/home/deyvsonaguiar/programacao/hero-tickets/backend/src/images/flyer2.png')
 
     if(response.error) {
       console.log(response.error)
