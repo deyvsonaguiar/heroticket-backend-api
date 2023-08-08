@@ -1,8 +1,11 @@
 import express, { Application } from 'express'
 import { connect } from './infra/database'
+import { EventRouter } from './routes/event.router'
+import { errorMiddleware } from './middlewares/error.middleware'
 
 export class App {
   public app: Application
+  private eventRouter = new EventRouter()
   
   constructor() {
     this.app = express()
@@ -13,13 +16,11 @@ export class App {
   }
 
   initializeRoutes() {
-    // this.app.use('/user', userRouter)
+    this.app.use('/events', this.eventRouter.router)
   }
 
   interceptionError() {
-    // this.app.use((err, req, res, next) => {
-    //   res.status(500).json({ message: 'Internal server error' })
-    // })
+    this.app.use(errorMiddleware)
   }
 
   middlewaresInitializer() {
