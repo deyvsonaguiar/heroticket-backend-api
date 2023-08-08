@@ -2,6 +2,7 @@ import { Router } from "express"
 import { EventRepositoryMongoose } from "../repositories/eventRepositoryMongoose"
 import { EventUseCase } from "../useCases/eventUseCase"
 import { EventController } from "../controllers/eventController"
+import { upload } from "../infra/multer"
 
 export class EventRouter {
   public router: Router
@@ -16,7 +17,19 @@ export class EventRouter {
   }
 
   initRouter() {
-    this.router.post('/', this.eventController.create.bind(this.eventController))
+    this.router.post(
+      '/', 
+      upload.fields([
+        {
+          name: 'banner',
+          maxCount: 1,
+        },
+        {
+          name: 'flyers',
+          maxCount: 3,
+        },
+      ]), 
+      this.eventController.create.bind(this.eventController))
   }
 
 }

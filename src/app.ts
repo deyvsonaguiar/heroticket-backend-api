@@ -15,15 +15,15 @@ export class App {
     connect()
   }
 
-  initializeRoutes() {
+  private initializeRoutes() {
     this.app.use('/events', this.eventRouter.router)
   }
 
-  interceptionError() {
+  private interceptionError() {
     this.app.use(errorMiddleware)
   }
 
-  middlewaresInitializer() {
+  private middlewaresInitializer() {
     this.app.use(express.json())
     this.app.use(express.urlencoded({ extended: true}))
   }
