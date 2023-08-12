@@ -1,5 +1,4 @@
 import request from "supertest"
-import { Event } from "../entities/event"
 import { App } from "../app"
 
 const app = new App()
@@ -19,7 +18,7 @@ describe('Teste de evento', () => {
       },
       coupons: [],
       participants: [],
-      date: new Date()
+      date: new Date(),
     }
 
     const response = await request(express)
@@ -27,6 +26,8 @@ describe('Teste de evento', () => {
       .field('title', event.title)
       .field('description', event.description)
       .field('city', event.city)
+      .field('categories', event.categories)
+      .field('date', event.date.toISOString())
       .field('coupons', event.coupons)
       .field('location[latitude]', event.location.latitude)
       .field('location[longitude]', event.location.longitude)

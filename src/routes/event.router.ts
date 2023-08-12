@@ -29,7 +29,11 @@ export class EventRouter {
           maxCount: 3,
         },
       ]), 
-      this.eventController.create.bind(this.eventController))
+      this.eventController.create.bind(this.eventController),
+    )
+    this.router.get(
+      '/',
+      this.eventController.findEventByLocation.bind(this.eventController),
+    );
   }
-
 }

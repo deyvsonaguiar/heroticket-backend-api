@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express"
-import { HttpInterception } from "../interfaces/HttpInterception"
+import { HttpException } from "../interfaces/HttpException"
 
 export function errorMiddleware(
-  err: HttpInterception, 
+  err: HttpException, 
   req: Request, 
   res: Response, 
   next: NextFunction
