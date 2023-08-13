@@ -83,6 +83,14 @@ export class EventUseCase {
     } 
   }
 
+  async findEventsByCategory(category: string) {
+
+    if(!category) throw new HttpException(400, 'Category is required')
+    const events = await this.eventRepository.findEventsByCategory(category)
+
+    return events
+  }
+
   private calculateDistance(
     lat1: number,
     lon1: number,
@@ -102,6 +110,7 @@ export class EventUseCase {
     const d = R * c;
     return d;
   }
+
   private deg2rad(deg: number): number {
     return deg * (Math.PI / 180);
   }

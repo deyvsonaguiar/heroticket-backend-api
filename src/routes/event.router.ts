@@ -35,5 +35,9 @@ export class EventRouter {
       '/',
       this.eventController.findEventByLocation.bind(this.eventController),
     );
+    this.router.get(
+      '/category/:category', 
+      this.eventController.findEventsByCategory.bind(this.eventController)
+    )
   }
 }
