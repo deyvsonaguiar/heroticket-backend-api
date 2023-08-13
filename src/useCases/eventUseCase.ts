@@ -84,11 +84,10 @@ export class EventUseCase {
   }
 
   async findEventsByCategory(category: string) {
+    if (!category) throw new HttpException(400, 'Category is required');
+    const events = await this.eventRepository.findEventsByCategory(category);
 
-    if(!category) throw new HttpException(400, 'Category is required')
-    const events = await this.eventRepository.findEventsByCategory(category)
-
-    return events
+    return events;
   }
 
   private calculateDistance(
