@@ -1,7 +1,18 @@
 import { Event } from "../entities/event";
 import { HttpException } from "../interfaces/HttpException";
 import { EventRepository } from "../repositories/eventRepository";
+import { UserRepositoryMongoose } from "../repositories/userRepositoryMongoose"
 import axios from  "axios";
+
+export interface IFilterProps {
+  latitude: number;
+  longitude: number;
+  name: string;
+  date: string;
+  category: string;
+  radius: number;
+  price: number;
+}
 
 export class EventUseCase {
 
@@ -89,6 +100,74 @@ export class EventUseCase {
 
     return events;
   }
+
+  async findEventsByName(name: string) {
+    if (!name) throw new HttpException(400, 'Name is required');
+    const events = await this.eventRepository.findEventsByName(name);
+
+    return events;
+  }
+
+  async findEventsById(id: string) {
+    if (!id) throw new HttpException(400, 'Id is required');
+    const events = await this.eventRepository.findEventById(id);
+
+    return events;
+  }
+
+  async addParticipant(id: string, name: string, email: string) {
+    const event = await this.eventRepository.findEventById(id)
+
+    if (!event) throw new HttpException(400, 'Event not found')
+
+    const userRepository = new UserRepositoryMongoose()
+    const participant = { name, email }
+    
+    let user: any = {}
+    const verifyIsUserExists = await userRepository.verifyIsUserExists(email)
+    if (!verifyIsUserExists) {
+      user = await userRepository.add(participant)
+    } else {
+      user = verifyIsUserExists
+    }
+    if (event.participants.includes(user._id))
+      throw new HttpException(400, 'User already exists')
+
+    event.participants.push(user._id)
+
+    const updateEvent = await this.eventRepository.update(event, id)
+
+    return event
+  }
+
+  async filterEvents({
+    latitude,
+    longitude,
+    name,
+    date,
+    category,
+    radius,
+    price,
+  }: IFilterProps) {
+    const events = await this.eventRepository.findEventsByFilter({
+      latitude,
+      longitude,
+      name,
+      date,
+      category,
+      radius,
+      price,
+    })
+
+    return events
+  }
+
+  async findEventsMain() {
+    const events = await this.eventRepository.findEventsMain(new Date());
+
+    return events;
+  }
+  
 
   private calculateDistance(
     lat1: number,
